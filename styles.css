@@ -1,0 +1,80 @@
+/* Variable to easily change the main colour */
+:root {
+    --teal: #74A99C;
+}
+
+.Teal-Text {
+    color: var(--teal) !important;
+}
+
+/* Styling for the auto suggestions */
+.Teal-Text > div > span {
+    color: var(--teal) !important;
+    pointer-events: none;
+}
+
+.Flex-Center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ChatGPT-Button {
+    background-color: var(--teal);
+    color: white;
+}
+
+.ChatGPT-Button:hover {
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+}
+
+
+.Button {
+    border: none;
+    border-radius: 4px;
+    font-family: arial,sans-serif;
+    font-size: 14px;
+    margin: 11px 4px;
+    padding: 0 16px;
+    line-height: 27px;
+    height: 36px;
+    width: 142.5px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Button-Container-Viewport {
+    flex-direction: column;
+    max-width: 152px;
+    max-height: 38px;
+    overflow: hidden;
+    display: inline-flex;
+    transform: translateY(10px);
+}
+
+.Button-Container {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-10px);
+    transition-duration: 0.4s;
+    animation-name: BounceIn;
+    animation-duration: 0.6s;
+    animation-delay: 0.2s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+}
+
+@keyframes BounceIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(-70px);
+    }
+    80% { transform: translateY(-66px); }
+    100% { transform: translateY(-68px); }
+}
