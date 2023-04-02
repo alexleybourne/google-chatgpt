@@ -3,8 +3,6 @@ const URL = window.location.href;
 const includesGoogle = URL.includes('www.google.com');
 const canRun = !URL.includes('search') && includesGoogle;
 
-const teal = '#74A99C;';
-
 const getSearchValue = () => {
   const searchValue = document.querySelector('[title="Search"]').value;
   // If the value is not blank it continues
@@ -16,7 +14,7 @@ const getSearchValue = () => {
   }
 };
 
-// Edits the suggestions google gives so they can send you to stack overflow too
+// Edits the suggestions google gives so they can send you to ChatGPT too
 const setToTeal = (selector, stackSearch) => {
   document.querySelectorAll(selector).forEach(function (item) {
     if (stackSearch) {
@@ -47,7 +45,7 @@ document.addEventListener(
   (e) => {
     // Don't want it running on google search / result pages
     if (!includesGoogle) return;
-    // If we have not clicked on the stack overflow button we want the page
+    // If we have not clicked on the ChatGPT button we want the page
     // to behave the same as normal
     if (!e.target.matches('.ChatGPT-Button')) return;
     // Prevent default click action that google does ( searches )
@@ -91,19 +89,18 @@ if (canRun) {
   const luckyButton = document.querySelector(
     'input[value="I\'m Feeling Lucky"]'
   );
-  console.log('lucky button: ', luckyButton);
-  // const input = document.querySelector('input[value="I\'m Feeling Lucky"]');
-  // const colour = luckyButton.style.color;
-  // console.log('color: ', colour);
-  // const backgroundColour = luckyButton.style.backgroundColor;
-  // console.log('background colour: ', backgroundColour);
   const colour = window.getComputedStyle(luckyButton).getPropertyValue('color');
   const backgroundColour = window
     .getComputedStyle(luckyButton)
     .getPropertyValue('background-color');
 
-  console.log('color: ', colour);
-  console.log('background colour: ', backgroundColour);
+  const ChatgptLogo = chrome.runtime.getURL('images/chatgpt-logo.png');
+  const ChatgptButtonInner = `
+    <span class="ChatGPT-Logo-Container Flex-Center">
+      <img src="${ChatgptLogo}" alt="" class="ChatGPT-Logo Flex-Center">
+    </span>
+    ChatGPT
+  `;
 
   // Finding each "I'm feeling lucky" Button
   var inputs = document.querySelectorAll('input[name="btnI"]');
@@ -116,16 +113,18 @@ if (canRun) {
       ButtonAnimated.innerHTML = `
                 <div class="Button-Container">
                     <button class="Button" style="color: ${colour}; background-color: ${backgroundColour};">I'm Feeling Lucky</button>
-                    <button onclick="stackSearch()" class="ChatGPT-Button Button">ChatGPT</button>
+                    <button onclick="stackSearch()" class="ChatGPT-Button Button Flex-Center">
+                      ${ChatgptButtonInner}
+                    </button>
                 </div>
             `;
       // replacing the feeling lucky button
       inputs[i].replaceWith(ButtonAnimated);
     } else {
-      // Creating the new stack overflow button
+      // Creating the new ChatGPT button
       const newButton = document.createElement('button');
-      newButton.innerHTML = 'ChatGPT';
-      newButton.classList.add('ChatGPT-Button', 'Button');
+      newButton.innerHTML = ChatgptButtonInner;
+      newButton.classList.add('ChatGPT-Button', 'Button', 'Flex-Center');
       newButton.onclick = () => stackSearch();
       // replacing the feeling lucky button
       inputs[i].replaceWith(newButton);

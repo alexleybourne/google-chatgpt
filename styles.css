@@ -19,6 +19,7 @@
     justify-content: center;
 }
 
+/* ChatGPT Button Syles */
 .ChatGPT-Button {
     background-color: var(--teal);
     color: white;
@@ -29,7 +30,22 @@
     box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
 }
 
+.ChatGPT-Logo-Container {
+    overflow: hidden;
+    width: 0px;
+    height: 0px;
+    margin-right: 4px;
+    border-radius: 100%;
+    animation: LogoReveal 0.6s forwards ease;
+    animation-delay: 0.6s;
+}
 
+.ChatGPT-Logo {
+    width: 18px;
+    height: 18px;
+}
+
+/* Base button styles */
 .Button {
     border: none;
     border-radius: 4px;
@@ -45,6 +61,7 @@
     user-select: none;
 }
 
+/* The viewport to allow the roll effect */
 .Button-Container-Viewport {
     flex-direction: column;
     max-width: 152px;
@@ -54,18 +71,17 @@
     transform: translateY(10px);
 }
 
+/* The stack of buttons to create the nice roll and bounce in effect */
 .Button-Container {
     display: flex;
     flex-direction: column;
     transform: translateY(-10px);
     transition-duration: 0.4s;
-    animation-name: BounceIn;
-    animation-duration: 0.6s;
+    animation: BounceIn 0.6s forwards ease;
     animation-delay: 0.2s;
-    animation-timing-function: ease;
-    animation-fill-mode: forwards;
 }
 
+/* Nice little bounce animation */
 @keyframes BounceIn {
     0% {
       opacity: 0;
@@ -77,4 +93,19 @@
     }
     80% { transform: translateY(-66px); }
     100% { transform: translateY(-68px); }
+}
+
+@keyframes LogoReveal {
+    0% {
+        opacity: 0;
+        width: 0px;
+        height: 0px;
+        transform: rotate(-180deg);
+    }
+    100% {
+        opacity: 1;
+        width: 18px;
+        height: 18px;
+        transform: rotate(0deg);
+    }
 }

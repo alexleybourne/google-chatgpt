@@ -9,16 +9,22 @@
       "scripting"
     ],
     "content_scripts": [
-        {
-          "matches": ["<all_urls>"],
-          "js": ["script.js"],
-          "css": ["styles.css"]
-        }
+      {
+        "matches": ["<all_urls>"],
+        "js": ["script.js"],
+        "css": ["styles.css"]
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["images/chatgpt-logo.png"],
+        "matches": ["<all_urls>"]
+      }
     ],
     "icons": {
-        "16": "images/icon16.png",
-        "32": "images/icon32.png",
-        "48": "images/icon48.png",
-        "128": "images/icon128.png"
+      "16": "images/icon16.png",
+      "32": "images/icon32.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
     }
 }
