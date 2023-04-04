@@ -15,9 +15,9 @@ const getSearchValue = () => {
 };
 
 // Edits the suggestions google gives so they can send you to ChatGPT too
-const setToTeal = (selector, stackSearch) => {
+const setToTeal = (selector, chatgptMessage) => {
   document.querySelectorAll(selector).forEach(function (item) {
-    if (stackSearch) {
+    if (chatgptMessage) {
       item.classList.add('Teal-Text');
     } else {
       item.classList.remove('Teal-Text');
@@ -25,7 +25,7 @@ const setToTeal = (selector, stackSearch) => {
   });
 };
 
-const stackSearch = () => {
+const chatgptMessage = () => {
   // gets the input value from the function
   const search = getSearchValue();
   // checks it has returned a value
@@ -51,7 +51,7 @@ document.addEventListener(
     // Prevent default click action that google does ( searches )
     e.preventDefault();
     // Now we run our search Function
-    stackSearch();
+    chatgptMessage();
   },
   false
 );
@@ -64,13 +64,13 @@ document.addEventListener('keyup', (e) => {
   if (!includesGoogle) return;
   // Gets the search value, checks it has a value and checks for the "/s" command
   const search = getSearchValue();
-  const stackSearch = search?.includes(searchPrefix);
+  const chatgptMessage = search?.includes(searchPrefix);
   // Search Field text
-  setToTeal('[title="Search"]', stackSearch);
+  setToTeal('[title="Search"]', chatgptMessage);
   // Suggestion text
-  setToTeal('[role="option"]', stackSearch);
+  setToTeal('[role="option"]', chatgptMessage);
   // Checking it can run and it is the enter key
-  if (e.code == 'Enter' && stackSearch) {
+  if (e.code == 'Enter' && chatgptMessage) {
     e.preventDefault();
     // removes "/s+" from the start of our query
     const searchCleaned = search.trim().replace(searchPrefix, '');
@@ -102,6 +102,11 @@ if (canRun) {
     ChatGPT
   `;
 
+  const ChatgptButtonInnerNoAnimation = `
+    <img src="${ChatgptLogo}" alt="" class="ChatGPT-Logo Flex-Center" style="margin-right: 4px; transform: translateY(4px);">
+    ChatGPT
+  `;
+
   // Finding each "I'm feeling lucky" Button
   var inputs = document.querySelectorAll('input[name="btnI"]');
   for (i = 0; i < inputs.length; i++) {
@@ -113,7 +118,7 @@ if (canRun) {
       ButtonAnimated.innerHTML = `
                 <div class="Button-Container">
                     <button class="Button" style="color: ${colour}; background-color: ${backgroundColour};">I'm Feeling Lucky</button>
-                    <button onclick="stackSearch()" class="ChatGPT-Button Button Flex-Center">
+                    <button onclick="chatgptMessage()" class="ChatGPT-Button Button Flex-Center">
                       ${ChatgptButtonInner}
                     </button>
                 </div>
@@ -123,9 +128,9 @@ if (canRun) {
     } else {
       // Creating the new ChatGPT button
       const newButton = document.createElement('button');
-      newButton.innerHTML = ChatgptButtonInner;
-      newButton.classList.add('ChatGPT-Button', 'Button', 'Flex-Center');
-      newButton.onclick = () => stackSearch();
+      newButton.innerHTML = ChatgptButtonInnerNoAnimation;
+      newButton.classList.add('ChatGPT-Button', 'Button', 'Inline-Flex');
+      newButton.onclick = () => chatgptMessage();
       // replacing the feeling lucky button
       inputs[i].replaceWith(newButton);
     }
