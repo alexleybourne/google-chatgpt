@@ -1,3 +1,11 @@
+// Thanks for checking out this project!
+// This was created by Alex Leybourne for fun in 2023
+// A lot of this code is old and unoptimised so please take it all witha grain of salt
+// If you have any questions or suggestions please feel free to reach out to me on twitter @alexleybourne
+// This is based of a Chrome Extension I made in 2021
+// https://github.com/alexleybourne/Google-Stack-Overflow
+// Have fun and have a nice day :)
+
 // Checking if the page is google search but not a google search results page
 const URL = window.location.href;
 const includesGoogle = URL.includes('www.google.com');
@@ -5,7 +13,18 @@ const canRun =
   (!URL.includes('search') && includesGoogle) ||
   !URL.includes('chat.openai.com');
 
-console.log(`I'm Feeling ChatGPT Extension Loaded 🤖`);
+const searchPrefix = `/c `;
+
+const cleanSearch = (str) => {
+  // remove search prefix
+  str = str.replace(searchPrefix, '');
+
+  // remove any extra spaces
+  str = str.trim();
+
+  // Return the cleaned string
+  return str;
+};
 
 if (URL.includes('chat.openai.com')) {
   let prompt = null;
@@ -14,11 +33,14 @@ if (URL.includes('chat.openai.com')) {
   chrome.storage.local.get(['prompt', 'dateTime']).then((saved) => {
     console.log('Saved Data is: ', saved.prompt, saved.dateTime);
 
+    // Prompt decoded as it is saved as uri encoded string
+    console.log('ALL DATA: ', JSON.stringify(saved));
     prompt = saved.prompt;
     dateTime = saved.dateTime;
-  });
 
-  console.log(`Prompt is: ${prompt} and Date is: ${dateTime}`);
+    console.log(`Prompt is: ${prompt} and Date is: ${dateTime}`);
+    console.log('Cleaned Prompt: ', cleanString(prompt));
+  });
 
   // Wait for the chat page to load
   // chatWindow.addEventListener('load', function () {
@@ -42,10 +64,7 @@ const getSearchValue = () => {
   const searchValue = document.querySelector('[title="Search"]').value;
   // If the value is not blank it continues
   if (searchValue.length) {
-    // Replaces spaces in the query with pluses to work in url query
-    const formattedValue = searchValue.replace(/\s/g, '+');
-    // Sends the cleaned up value back
-    return formattedValue;
+    return searchValue;
   }
 };
 
@@ -60,11 +79,15 @@ const setToTeal = (selector, chatgptMessage) => {
   });
 };
 
-const sendToChatGPT = (prompt) => {
+const sendToChatGPT = (text) => {
   // Function to save prompt and current date and time
+  // This also cleans the prompt of any extra characters and prefix
+  const prompt = cleanSearch(text);
   const dateTime = new Date().toLocaleString();
 
-  chrome.storage.local.set({ prompt, dateTime }).then(() => {
+  console.log('PROMPT: ', prompt);
+
+  chrome.storage.local.set({ prompt: prompt, dateTime: dateTime }).then(() => {
     console.log('Saved values message: ', prompt, ' Date: ', dateTime);
   });
 
@@ -76,6 +99,7 @@ const chatgptMessage = () => {
   const search = getSearchValue();
   // checks it has returned a value
   if (search) {
+    console.log('SEARCH VALUE: ', search);
     sendToChatGPT(search);
   }
 };
@@ -101,8 +125,6 @@ document.addEventListener(
   false
 );
 
-const searchPrefix = `/c`;
-
 document.addEventListener('keyup', (e) => {
   // The search and results page both use the same input title
   // This code can run on both (⌐■_■)
@@ -117,10 +139,9 @@ document.addEventListener('keyup', (e) => {
   // Checking it can run and it is the enter key
   if (e.code == 'Enter' && chatgptMessage) {
     e.preventDefault();
-    // removes "/s+" from the start of our query
-    const searchCleaned = search.trim().replace(searchPrefix, '');
+    // removes "/c " from the start of our query and whitespace
+    const searchCleaned = cleanSearch(search);
     sendToChatGPT(searchCleaned);
-    // window.location.href = `https://stackoverflow.com/search?q=${searchCleaned}`;
   }
 });
 
