@@ -1,7 +1,42 @@
 // Checking if the page is google search but not a google search results page
 const URL = window.location.href;
 const includesGoogle = URL.includes('www.google.com');
-const canRun = !URL.includes('search') && includesGoogle;
+const canRun =
+  (!URL.includes('search') && includesGoogle) ||
+  !URL.includes('chat.openai.com');
+
+console.log(`I'm Feeling ChatGPT Extension Loaded 🤖`);
+
+if (URL.includes('chat.openai.com')) {
+  let prompt = null;
+  let dateTime = null;
+
+  chrome.storage.local.get(['prompt', 'dateTime']).then((saved) => {
+    console.log('Saved Data is: ', saved.prompt, saved.dateTime);
+
+    prompt = saved.prompt;
+    dateTime = saved.dateTime;
+  });
+
+  console.log(`Prompt is: ${prompt} and Date is: ${dateTime}`);
+
+  // Wait for the chat page to load
+  // chatWindow.addEventListener('load', function () {
+  //   console.log('CHAT WINDOW OPENED 3');
+
+  //   // Find the message input field and set its value to the search input
+  //   let messageInput = chatWindow.document.querySelector(
+  //     'textarea[placeholder="Send a message..."]'
+  //   );
+  //   messageInput.value = searchInput;
+
+  //   let form = document.querySelector('form');
+
+  //   // Find the button inside the form
+  //   let sendButton = form.querySelector('button');
+  //   sendButton.click();
+  // });
+}
 
 const getSearchValue = () => {
   const searchValue = document.querySelector('[title="Search"]').value;
@@ -25,13 +60,23 @@ const setToTeal = (selector, chatgptMessage) => {
   });
 };
 
+const sendToChatGPT = (prompt) => {
+  // Function to save prompt and current date and time
+  const dateTime = new Date().toLocaleString();
+
+  chrome.storage.local.set({ prompt, dateTime }).then(() => {
+    console.log('Saved values message: ', prompt, ' Date: ', dateTime);
+  });
+
+  window.location.href = 'https://chat.openai.com/chat';
+};
+
 const chatgptMessage = () => {
   // gets the input value from the function
   const search = getSearchValue();
   // checks it has returned a value
   if (search) {
-    // visits the search
-    window.location.href = `https://stackoverflow.com/search?q=${search}`;
+    sendToChatGPT(search);
   }
 };
 
@@ -74,7 +119,8 @@ document.addEventListener('keyup', (e) => {
     e.preventDefault();
     // removes "/s+" from the start of our query
     const searchCleaned = search.trim().replace(searchPrefix, '');
-    window.location.href = `https://stackoverflow.com/search?q=${searchCleaned}`;
+    sendToChatGPT(searchCleaned);
+    // window.location.href = `https://stackoverflow.com/search?q=${searchCleaned}`;
   }
 });
 
@@ -103,7 +149,7 @@ if (canRun) {
   `;
 
   const ChatgptButtonInnerNoAnimation = `
-    <img src="${ChatgptLogo}" alt="" class="ChatGPT-Logo Flex-Center" style="margin-right: 4px; transform: translateY(4px);">
+    <img src="${ChatgptLogo}" alt="" class="ChatGPT-Logo Flex-Center" style="margin-right: 4px;">
     ChatGPT
   `;
 
@@ -130,6 +176,7 @@ if (canRun) {
       const newButton = document.createElement('button');
       newButton.innerHTML = ChatgptButtonInnerNoAnimation;
       newButton.classList.add('ChatGPT-Button', 'Button', 'Inline-Flex');
+      newButton.style.transform = 'translateY(4px)';
       newButton.onclick = () => chatgptMessage();
       // replacing the feeling lucky button
       inputs[i].replaceWith(newButton);

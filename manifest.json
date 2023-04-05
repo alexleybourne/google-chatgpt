@@ -6,7 +6,8 @@
     "description": "Sometimes you get a feeling that you don't want to google it.",
     "permissions": [
       "tabs",
-      "scripting"
+      "scripting",
+      "storage"
     ],
     "content_scripts": [
       {
