@@ -38,26 +38,42 @@ if (URL.includes('chat.openai.com')) {
     prompt = saved.prompt;
     dateTime = saved.dateTime;
 
+    const inputPrompt = () => {
+      // Find the form
+      const form = document.querySelector('form');
+      console.log('Form is: ', form);
+
+      // Find the message input field and set its value to the search input
+      const messageInput = form.querySelector('textarea');
+      messageInput.value = prompt;
+      console.log('messageInput.value is: ', messageInput.value);
+
+      const sendButton = form.querySelector('button');
+      sendButton.click();
+    };
+
+    // Wait for the page to load
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   inputPrompt();
+    // });
+
+    // Wait for the page to load
+    setTimeout(() => {
+      inputPrompt();
+    }, 2000);
+
+    setTimeout(() => {
+      document.addEventListener('keydown', function (ev) {
+        console.log(ev.which);
+      });
+
+      var e = new KeyboardEvent('keydown', { keyCode: 8, which: 8 });
+      console.log(e);
+      document.dispatchEvent(e);
+    }, 3000);
+
     console.log(`Prompt is: ${prompt} and Date is: ${dateTime}`);
-    console.log('Cleaned Prompt: ', cleanString(prompt));
   });
-
-  // Wait for the chat page to load
-  // chatWindow.addEventListener('load', function () {
-  //   console.log('CHAT WINDOW OPENED 3');
-
-  //   // Find the message input field and set its value to the search input
-  //   let messageInput = chatWindow.document.querySelector(
-  //     'textarea[placeholder="Send a message..."]'
-  //   );
-  //   messageInput.value = searchInput;
-
-  //   let form = document.querySelector('form');
-
-  //   // Find the button inside the form
-  //   let sendButton = form.querySelector('button');
-  //   sendButton.click();
-  // });
 }
 
 const getSearchValue = () => {
