@@ -6,12 +6,22 @@
 // https://github.com/alexleybourne/Google-Stack-Overflow
 // Have fun and have a nice day :)
 
+// Simple logic to use gpt 4 or gpt 3
+const useChatGPT4 = false;
+const chatGPTUrl = `https://chat.openai.com/chat${
+  useChatGPT4 ? '?model=gpt-4' : ''
+}`;
+
 // Checking if the page is google search but not a google search results page
 const URL = window.location.href;
+
+// Checks if the URL includes the following
 const includesGoogle = URL.includes('www.google.com');
-const canRun =
-  (!URL.includes('search') && includesGoogle) ||
-  !URL.includes('chat.openai.com');
+const isSearch = URL.includes('search');
+const isChatGpt = URL.includes('chat.openai.com');
+
+// If the URL is not a google search page and it includes google run google searching code
+const canRun = (!isSearch && includesGoogle) || !isChatGpt;
 
 const searchPrefix = `/c `;
 
@@ -101,7 +111,7 @@ const sendToChatGPT = (text) => {
     console.log('Saved values message: ', prompt, ' Date: ', dateTime);
   });
 
-  window.location.href = 'https://chat.openai.com/chat';
+  window.location.href = chatGPTUrl;
 };
 
 const chatgptMessage = () => {
