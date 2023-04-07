@@ -38,41 +38,35 @@ if (URL.includes('chat.openai.com')) {
     prompt = saved.prompt;
     dateTime = saved.dateTime;
 
-    const inputPrompt = () => {
-      // Find the form
-      const form = document.querySelector('form');
-      console.log('Form is: ', form);
+    if (prompt !== null && prompt !== undefined && prompt !== 'undefined') {
+      console.log('PROMPT FOUND!!');
 
-      // Find the message input field and set its value to the search input
-      const messageInput = form.querySelector('textarea');
-      messageInput.value = prompt;
-      console.log('messageInput.value is: ', messageInput.value);
+      const inputPrompt = () => {
+        // Find the form
+        const form = document.querySelector('form');
+        console.log('Form is: ', form);
 
-      const sendButton = form.querySelector('button');
-      sendButton.click();
-    };
+        // Find the message input field and set its value to the search input
+        const messageInput = form.querySelector('textarea');
+        messageInput.value = prompt;
+        console.log('messageInput.value is: ', messageInput.value);
 
-    // Wait for the page to load
-    // document.addEventListener('DOMContentLoaded', () => {
-    //   inputPrompt();
-    // });
+        // Clear the prompt and date time from storage after use
+        chrome.storage.local.clear();
 
-    // Wait for the page to load
-    setTimeout(() => {
-      inputPrompt();
-    }, 2000);
+        // Find the send button and click it
+        const sendButton = form.querySelector('button');
+        sendButton.disabled = false;
+        sendButton.click();
+      };
 
-    setTimeout(() => {
-      document.addEventListener('keydown', function (ev) {
-        console.log(ev.which);
-      });
+      // Wait for the page to load ( definitely not the best way to do this )
+      setTimeout(() => {
+        inputPrompt();
+      }, 2000);
 
-      var e = new KeyboardEvent('keydown', { keyCode: 8, which: 8 });
-      console.log(e);
-      document.dispatchEvent(e);
-    }, 3000);
-
-    console.log(`Prompt is: ${prompt} and Date is: ${dateTime}`);
+      console.log(`Prompt is: ${prompt} and Date is: ${dateTime}`);
+    }
   });
 }
 
