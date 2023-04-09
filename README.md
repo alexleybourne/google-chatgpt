@@ -1,11 +1,18 @@
 # Google ChatGPT
 
-A Google Chrome extension that swaps the `I'm Feeling Lucky` button for ChatGPT 🤖
+A Google Chrome extension that swaps the `I'm Feeling Lucky` button for a ChatGPT button 🤖
+
+No api key required as it redirects to `https://chat.openai.com/chat` and auto submits the prompt ⚡️
+
+If you are looking to make your own extension or have a go modifying this one. I have commented all the code to make it nice and easy to understand / navigate 😁
+
+![Gif showing the new Chatgpt Button on the Google homepage](https://github.com/alexleybourne/google-chatgpt/master/readme/chatgpt-button-animation.gif)
 
 ## Features
 
-- Removes the _"I'm Feeling Lucky"_ button
-- You can also use the new shiny `ChatGPT` button
+- Removes the _"I'm Feeling Lucky"_ button 🚮
+- Use /c in your searches to turn them into a prompt for ChatGPT 🤖
+- You can also use the new shiny `ChatGPT` button ✨
 
 ## How to install
 
