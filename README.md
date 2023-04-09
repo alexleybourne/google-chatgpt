@@ -6,7 +6,7 @@ No api key required as it redirects to `https://chat.openai.com/chat` and auto s
 
 If you are looking to make your own extension or have a go modifying this one. I have commented all the code to make it nice and easy to understand / navigate 😁
 
-![Gif showing the new Chatgpt Button on the Google homepage](https://github.com/alexleybourne/google-chatgpt/master/readme/chatgpt-button-animation.gif)
+![Gif showing the new Chatgpt Button on the Google homepage](https://raw.githubusercontent.com/alexleybourne/google-chatgpt/main/readme/chatgpt-button-animation.gif)
 
 ## Features
 
